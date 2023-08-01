@@ -1,0 +1,74 @@
+mapscripts LittlerootTown_DavidsLab_MapScripts {
+    
+}
+
+script DavidsLab_EventScript_Presentation {
+    lockall
+    faceplayer
+    msgbox(format("Olá, é um prazer em conhece-lo, eu sou David o criador dessa hackrom, eu ainda estou aprendendo a fazer as coisas entao nao se incomode com a bagunça. Eu deixei um presente para voce, escolha um dos pokémons ao lado"))
+    msgbox(format("Alem disso, eu acho que eu deveria criar alguma coisa nao?"))
+    releaseall
+}
+
+script DavidsLab_EventScript_Pokeball {
+ 
+    lockall
+    showmonpic(SPECIES_MARSHADOW, 10,3)
+    msgbox("Do you want to choose Marshadow?", MSGBOX_YESNO)
+    if(var(VAR_RESULT) == YES){
+        givemon(SPECIES_MARSHADOW, 50, ITEM_MASTER_BALL)
+        if(var(VAR_RESULT) == MON_GIVEN_TO_PARTY){
+            playfanfare(MUS_OBTAIN_ITEM)
+            msgbox("Recieved Marshadow!")
+            removeobject(2)
+            setflag(FLAG_UNUSED_0x493)
+            call(NicknamePartyMon)
+        }
+        elif(var(VAR_RESULT) == MON_GIVEN_TO_PC){
+            playfanfare(MUS_OBTAIN_ITEM)
+            msgbox("Recieved Marshadow")
+            removeobject(2)
+            setflag(FLAG_UNUSED_0x493)
+            call(NicknameBoxMon)
+        }
+        else{
+            hidemonpic
+            msgbox("No More Room")
+        }
+    }
+    else{
+        hidemonpic
+        msgbox(DavidsLab_NotChosen)
+    }
+    waitmessage
+    releaseall
+    end
+ 
+}
+ 
+script NicknamePartyMon{
+ 
+    msgbox("Give it a nickname?", MSGBOX_YESNO)
+    hidemonpic
+    if(var(VAR_RESULT) == YES){
+        call(Common_EventScript_GetGiftMonPartySlot)
+        call(Common_EventScript_NameReceivedPartyMon)
+    }
+ 
+ 
+}
+ 
+script NicknameBoxMon{
+ 
+    msgbox("Give it a nickname?", MSGBOX_YESNO)
+    hidemonpic
+    if(var(VAR_RESULT) == YES){
+        call(Common_EventScript_NameReceivedBoxMon)
+    }
+    call(Common_EventScript_TransferredToPC)
+ 
+}
+ 
+text DavidsLab_NotChosen{
+    "You did not choose the Pokemon"
+}
